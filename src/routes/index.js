@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './Home'
 import About from './About'
-import Test from './Test'
 
 export default createRouter({
   history: createWebHistory(),
@@ -14,10 +13,6 @@ export default createRouter({
     {
       path: '/about',
       component: About
-    },
-    {
-      path: '/test',
-      component: Test
     }
   ]
 })

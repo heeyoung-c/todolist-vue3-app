@@ -1,13 +1,10 @@
 <template>
   <header>
     <RouterLink to="/">
-      Home.
+      ToDoList
     </RouterLink>
     <RouterLink to="/about">
-      About.
-    </RouterLink>
-    <RouterLink to="/test">
-      Test.
+      About
     </RouterLink>
   </header>
 </template>
