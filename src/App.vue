@@ -1,14 +1,14 @@
 <template>
-  <Header />
+  <TheHeader />
   <RouterView />
 </template>
 
 <script>
-import Header from '~/components/Header'
+import TheHeader from '~/components/TheHeader'
 
 export default {
   components: {
-    Header
+    TheHeader
   }
 }
 </script>

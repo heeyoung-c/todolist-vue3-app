@@ -1,6 +1,6 @@
 <template>
   <span class="material-symbols-outlined">
-    delete_forever
+    <slot></slot>
   </span>
 </template>
 
@@ -10,10 +10,14 @@
 span {
   font-size: 30px;
   color: $color-primary;
+
+  vertical-align: middle;
+  
   transition: .2s;
   &:hover {
     cursor: pointer;
     transform: scale(1.1);
+    color: $color-second;
   }
 }
 </style>

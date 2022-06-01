@@ -12,7 +12,7 @@ export default {
   state() {
     return {
       todos: [],
-      order: 0
+      order: 1
     }
   },
   mutations: {
@@ -25,20 +25,29 @@ export default {
     deleteTodo(state, payload) {
       const index = state.todos.findIndex(todo => todo.id === payload)
       state.todos.splice(index, 1)
+    },
+    setOrder(state) {
+      if (!state.todos) {
+        state.order = 1
+      } else {
+        state.order += 1
+      }
     }
   },
   actions: { 
     // CREATE
-    async createTodo({ commit }, title) {
+    async createTodo({ state, commit }, title) {
       const res = await axios({
         url: END_POINT,
         method: 'POST',
         headers,
         data: {
-          title
+          title,
+          order: state.order
         }
       })
       console.log(res)
+      commit('setOrder')
       commit('addTodos', res.data)
     },
 
@@ -51,6 +60,21 @@ export default {
       })
       console.log(res)
       commit('setTodos', res.data)
+    },
+
+    // Update
+    async updateTodo(context, { id, title, done, order }) {
+      const res = await axios({
+        url: END_POINT + '/' + id,
+        method: 'PUT',
+        headers,
+        data: {
+          title,
+          done,
+          order
+        }
+      })
+      console.log(res)
     },
 
     // DELETE

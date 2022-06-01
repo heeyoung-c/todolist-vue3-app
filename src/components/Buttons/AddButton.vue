@@ -23,10 +23,11 @@ button {
     content: "+";
     opacity: 0;
     margin-left: -15px;
+    color: $color-second;
     transition-duration: 0.2s;
   }
   &:hover {
-    color: black;
+    color: $color-second;
     background: rgba(0, 0, 0, 0.02);
     border: solid 1px gainsboro;
     &:before {
