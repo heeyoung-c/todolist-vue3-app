@@ -6,7 +6,9 @@
       :todo="todo"
       @update-title="todo.title = $event"
       @update-todo="updateTodo"
-      @delete-todo="deleteTodo" />
+      @delete-todo="deleteTodo" 
+      @done-todo="todo.done = true" 
+      @not-done-todo="todo.done = false" />
   </ul>
 </template>
 

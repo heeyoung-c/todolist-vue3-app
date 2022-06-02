@@ -37,9 +37,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~/scss/_variables";
-
-h1 {
+* {
   font-family: "Oswald", sans-serif;
+}
+h1 {
   font-size: 60px;
   color: $color-primary;
   text-align: center;

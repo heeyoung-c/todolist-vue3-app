@@ -40,7 +40,7 @@ export default {
 
   .inner {
     padding: 0 10px 0;
-    // border: 1px solid;    
+    border: 1px solid;    
   }  
 }
 

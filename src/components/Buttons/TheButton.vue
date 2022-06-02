@@ -8,16 +8,15 @@
 @import "~/scss/_variables";
 
 span {
-  font-size: 30px;
   color: $color-primary;
-
+  font-size: 30px;
   vertical-align: middle;
-  
+
   transition: .2s;
   &:hover {
+    color: $color-second;
     cursor: pointer;
     transform: scale(1.1);
-    color: $color-second;
   }
 }
 </style>
