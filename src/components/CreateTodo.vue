@@ -3,6 +3,7 @@
   <div class="container">
     <input
       :value="title"
+      placeholder="할 일을 추가해보세요!"
       @input="title = $event.target.value"
       @keydown.enter="createTodo" />
     <AddButton

@@ -1,59 +1,103 @@
 <template>
-  <li>
-    <div class="handle">
-      ::
-    </div>
-
-    <template v-if="!editMode">
+  <template v-if="showComplete && todo.done">
+    <li>
+      <div class="handle">
+        <TheButton>
+          height
+        </TheButton>
+      </div>
       <span 
-        ref="notDone"
         class="title"
         :class="{ 'done-todo': todo.done }">
         {{ todo.title }}
-        {{ todo.order }}
       </span>
-      <template v-if="!todo.done">
-        <TheButton @click.stop="onEditMode">
-          edit
-        </TheButton>
-        <TheButton
-          @click="doneTodo(); updateTodo()">
-          check_box_outline_blank
-        </TheButton>
-      </template>
-
-      <template v-else>
-        <TheButton
-          @click="notDoneTodo(); updateTodo()">
-          check_box
-        </TheButton>
-      </template>
+      
+      <TheButton
+        @click="notDoneTodo(); updateTodo()">
+        check_box
+      </TheButton>
       
       <TheButton @click="deleteTodo">
         delete_forever
       </TheButton>
-    </template>
+    </li>
+    <div
+      class="update-date">
+      <span class="material-symbols-outlined">
+        subdirectory_arrow_right
+      </span>
+      <span class="update-date__date">
+        수정: {{ updateDate(todo.updatedAt) }}
+      </span>
+    </div>
+  </template>
 
-    <template v-else>
-      <div @click.stop>
-        <input
-          ref="titleInput" 
-          :value="title" 
-          @input="title = $event.target.value" 
-          @keydown.enter="offEditMode(); updateTitle(), updateTodo()"
-          @keydown.esc="offEditMode" />
-
-        <TheButton 
-          @click="offEditMode(); updateTitle(); updateTodo()"> 
-          check_circle
-        </TheButton>
-
-        <TheButton @click="offEditMode">
-          cancel
+  <template v-else-if="!showComplete && !todo.done">
+    <li>
+      <div class="handle">
+        <TheButton>
+          height
         </TheButton>
       </div>
-    </template>
-  </li>
+      <template v-if="!editMode">
+        <span 
+          class="title"
+          :class="{ 'done-todo': todo.done }">
+          {{ todo.title }}
+        </span>
+      
+        <template v-if="!todo.done">
+          <TheButton @click.stop="onEditMode">
+            edit
+          </TheButton>
+          <TheButton
+            @click="doneTodo(); updateTodo()">
+            check_box_outline_blank
+          </TheButton>
+        </template>
+
+        <template v-else>
+          <TheButton
+            @click="notDoneTodo(); updateTodo()">
+            check_box
+          </TheButton>
+        </template>
+      
+        <TheButton @click="deleteTodo">
+          delete_forever
+        </TheButton>
+      </template>
+
+      <template v-else>
+        <div @click.stop>
+          <input
+            ref="titleInput" 
+            :value="title" 
+            @input="title = $event.target.value" 
+            @keydown.enter="offEditMode(); updateTitle(), updateTodo()"
+            @keydown.esc="offEditMode" />
+
+          <TheButton 
+            @click="offEditMode(); updateTitle(); updateTodo()"> 
+            check_circle
+          </TheButton>
+
+          <TheButton @click="offEditMode">
+            cancel
+          </TheButton>
+        </div>
+      </template>
+    </li>
+    <div
+      class="update-date">
+      <span class="material-symbols-outlined">
+        subdirectory_arrow_right
+      </span>
+      <span class="update-date__date">
+        수정: {{ updateDate(todo.updatedAt) }}
+      </span>
+    </div>
+  </template>
 </template>
 
 <script>
@@ -61,11 +105,15 @@ import TheButton from '~/components/Buttons/TheButton.vue'
 
 export default {
   components: {
-    TheButton,
+    TheButton
 },
   props: {
     todo: {
       type: Object,
+      required: true
+    },
+    showComplete: {
+      type: Boolean,
       required: true
     }
   },
@@ -105,10 +153,14 @@ export default {
     },
     doneTodo() {
       this.$emit('done-todo', this.todo)
-      console.log(this.$refs.notDone)
     },
     notDoneTodo() {
       this.$emit('not-done-todo', this.todo)
+    },
+    updateDate(oldDate) {
+      return new Date(oldDate)
+        .toLocaleString('ko-KR')
+        .replace(/(\s*)/g, '')
     }
   }
 }
@@ -124,7 +176,7 @@ li {
   box-sizing: border-box;
 
   padding-top: 16px;
-  margin-bottom: 10px;
+  margin-top: 10px;
   border: 1px solid $color-primary;
   background-color: rgba($color-white,.9);
 
@@ -139,7 +191,7 @@ li {
     padding-top: 2px;
   }
   input {
-    width: 302px;
+    width: 280px;
     height: 24px;
 
     border: none;
@@ -155,8 +207,17 @@ li {
   color: rgba($color-black, 0.2);
   text-decoration-line: line-through;
   text-decoration-color: rgba($color-black, 0.2);
-  
+
   transition-duration: 0.5s;
 }
-
+.update-date {
+  color: rgba($color-black, 0.5);
+  font-family: "Oswald", sans-serif;
+  span {
+  font-size: 14px;
+  }
+  &__date {
+    display: inline-block;
+  }
+}
 </style>

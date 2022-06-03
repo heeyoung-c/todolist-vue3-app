@@ -12,7 +12,7 @@ export default {
   state() {
     return {
       todos: [],
-      order: 1
+      order: 1        
     }
   },
   mutations: {
@@ -27,11 +27,11 @@ export default {
       state.todos.splice(index, 1)
     },
     setOrder(state) {
-      if (!state.todos) {
+      if (state.todos.length === 0) {
         state.order = 1
       } else {
-        state.order += 1
-      }
+        state.order = state.todos[state.todos.length - 1].order + 1
+      }      
     }
   },
   actions: { 
@@ -47,8 +47,8 @@ export default {
         }
       })
       console.log(res)
-      commit('setOrder')
       commit('addTodos', res.data)
+      commit('setOrder')
     },
 
     // READ
@@ -60,9 +60,10 @@ export default {
       })
       console.log(res)
       commit('setTodos', res.data)
+      commit('setOrder')
     },
 
-    // Update
+    // UPDATE
     async updateTodo(context, { id, title, done, order }) {
       const res = await axios({
         url: END_POINT + '/' + id,
