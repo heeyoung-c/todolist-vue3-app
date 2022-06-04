@@ -1,9 +1,17 @@
 <template>
   <div
-    v-if="!todos.length" 
+    v-if="!todos.length || (todos.filter(todo => todo.done).length === todos.length && !showComplete)" 
     class="no-todo">
     <div class="inner">
-      작성된 TODO가 존재하지 않습니다
+      진행중인 TODO가 존재하지 않습니다😎
+    </div>
+  </div>
+
+  <div
+    v-else-if="todos.filter(todo => !todo.done).length === todos.length && showComplete" 
+    class="no-todo">
+    <div class="inner">
+      완료된 TODO가 존재하지 않습니다😥
     </div>
   </div>
 
@@ -24,19 +32,20 @@
     <div class="inner">
       <TheButton
         class="btn"
-        @click="handler(false)">
-        format_list_bulleted
+        @click="navHandler(false)">
+        toc
       </TheButton>
 
       <TheButton
         class="btn"
-        @click="handler(true)">
-        checklist
+        @click="navHandler(true)">
+        checklist_rtl
       </TheButton>
 
       <TheButton
         v-if="showComplete"
-        class="btn remove">
+        class="btn remove"
+        @click="doneTodoToDelete">
         delete_sweep
       </TheButton>
     </div>
@@ -75,14 +84,24 @@ export default {
     async readTodos() {
       this.read()
     },
-    async updateTodo(todoToUpdate) {
+    async updateTodo(todoToUpdate) { // 단일 todo 업데이트
       this.update(todoToUpdate)
     },
-    async deleteTodo(todoIdToDelete) {
+    async deleteTodo(todoIdToDelete) { // 단일 todo 제거
       this.delete(todoIdToDelete)
     },
-    handler(boolean) {
+    navHandler(boolean) { // 전체 todo목록, 완료 목록 보여주는 nav 설정
       this.showComplete = boolean
+    }, 
+    async doneTodoToDelete() { // 완료 todo 목록 id값 추출, 한번에 삭제하기 위함
+      let todosIdToDelete = []
+      this.todos
+        .filter(todo => todo.done)
+        .forEach(todo => todosIdToDelete.push(todo.id))
+
+      for (let todoIdToDelete of todosIdToDelete) { // 추출된 id값 하나씩 보내서 삭제하기
+        this.delete(todoIdToDelete)
+      }
     }
   }
 }
@@ -93,7 +112,7 @@ export default {
 ul, .no-todo {
   min-height: 350px;
   box-sizing: content-box;
-  border: 1px solid rgba($color-primary, 0.1);
+  border: 1px solid rgba($color-primary, 0);
 }
 .no-todo {
   .inner {

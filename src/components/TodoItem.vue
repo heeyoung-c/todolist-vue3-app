@@ -1,5 +1,72 @@
 <template>
-  <template v-if="showComplete && todo.done">
+  <template v-if="!showComplete && !todo.done">
+    <li>
+      <div class="handle">
+        <TheButton>
+          height
+        </TheButton>
+      </div>
+      <template v-if="!editMode">
+        <span 
+          class="title"
+          :class="{ 'done-todo': todo.done }">
+          {{ todo.title }}
+        </span>
+          
+        <template v-if="!todo.done">
+          <TheButton @click.stop="onEditMode">
+            edit
+          </TheButton>
+          <TheButton
+            @click="doneTodo(); updateTodo()">
+            check_box_outline_blank
+          </TheButton>
+        </template>
+    
+        <template v-else>
+          <TheButton
+            @click="notDoneTodo(); updateTodo()">
+            check_box
+          </TheButton>
+        </template>
+          
+        <TheButton @click="deleteTodo">
+          delete_forever
+        </TheButton>
+      </template>
+    
+      <template v-else>
+        <div @click.stop>
+          <input
+            ref="titleInput" 
+            :value="title" 
+            @input="title = $event.target.value" 
+            @keydown.enter="offEditMode(); updateTitle(), updateTodo()"
+            @keydown.esc="offEditMode" />
+    
+          <TheButton 
+            @click="offEditMode(); updateTitle(); updateTodo()"> 
+            check_circle
+          </TheButton>
+    
+          <TheButton @click="offEditMode">
+            cancel
+          </TheButton>
+        </div>
+      </template>
+    </li>
+    <div
+      class="update-date">
+      <span class="material-symbols-outlined">
+        subdirectory_arrow_right
+      </span>
+      <span class="update-date__date">
+        수정: {{ updateDate(todo.updatedAt) }}
+      </span>
+    </div>
+  </template>
+      
+  <template v-else-if="showComplete && todo.done">
     <li>
       <div class="handle">
         <TheButton>
@@ -20,73 +87,6 @@
       <TheButton @click="deleteTodo">
         delete_forever
       </TheButton>
-    </li>
-    <div
-      class="update-date">
-      <span class="material-symbols-outlined">
-        subdirectory_arrow_right
-      </span>
-      <span class="update-date__date">
-        수정: {{ updateDate(todo.updatedAt) }}
-      </span>
-    </div>
-  </template>
-
-  <template v-else-if="!showComplete && !todo.done">
-    <li>
-      <div class="handle">
-        <TheButton>
-          height
-        </TheButton>
-      </div>
-      <template v-if="!editMode">
-        <span 
-          class="title"
-          :class="{ 'done-todo': todo.done }">
-          {{ todo.title }}
-        </span>
-      
-        <template v-if="!todo.done">
-          <TheButton @click.stop="onEditMode">
-            edit
-          </TheButton>
-          <TheButton
-            @click="doneTodo(); updateTodo()">
-            check_box_outline_blank
-          </TheButton>
-        </template>
-
-        <template v-else>
-          <TheButton
-            @click="notDoneTodo(); updateTodo()">
-            check_box
-          </TheButton>
-        </template>
-      
-        <TheButton @click="deleteTodo">
-          delete_forever
-        </TheButton>
-      </template>
-
-      <template v-else>
-        <div @click.stop>
-          <input
-            ref="titleInput" 
-            :value="title" 
-            @input="title = $event.target.value" 
-            @keydown.enter="offEditMode(); updateTitle(), updateTodo()"
-            @keydown.esc="offEditMode" />
-
-          <TheButton 
-            @click="offEditMode(); updateTitle(); updateTodo()"> 
-            check_circle
-          </TheButton>
-
-          <TheButton @click="offEditMode">
-            cancel
-          </TheButton>
-        </div>
-      </template>
     </li>
     <div
       class="update-date">
@@ -157,11 +157,23 @@ export default {
     notDoneTodo() {
       this.$emit('not-done-todo', this.todo)
     },
-    updateDate(oldDate) {
+    updateDate(oldDate) { // 받아온 todo 수정날짜 현지화
       return new Date(oldDate)
         .toLocaleString('ko-KR')
         .replace(/(\s*)/g, '')
-    }
+    },
+    // initSortable() {
+    //   new Sortable(this.$refs.todoList, {
+    //     handle: 'li .handle', // 드래그 핸들이 될 요소의 선택자를 입력합니다.
+    //     delay: 50, // 클릭이 밀리는 것을 방지하기 위해 약간의 지연 시간을 추가합니다.
+    //     animation: 0, // 정렬할 때 애니메이션 속도(ms)를 지정합니다.
+    //     forceFallback: true, // 다양한 환경의 일관된 Drag&Drop(DnD)을 위해 HTML5 기본 DnD 동작을 무시하고 내장 기능을 사용합니다.
+    //     // 요소의 DnD가 종료되면 실행할 핸들러(함수)를 지정합니다.
+    //     onEnd: event => {
+    //       console.log(event)
+    //     }
+    //   })
+    // }
   }
 }
 </script>
