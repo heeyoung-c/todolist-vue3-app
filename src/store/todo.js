@@ -43,18 +43,22 @@ export default {
   actions: { 
     // CREATE
     async createTodo({ state, commit }, title) {
-      const res = await axios({
-        url: END_POINT,
-        method: 'POST',
-        headers,
-        data: {
-          title,
-          order: state.order
-        }
-      })
-      console.log(res)
-      commit('addTodos', res.data)
-      commit('setOrder')
+      try {
+        const res = await axios({
+          url: END_POINT,
+          method: 'POST',
+          headers,
+          data: {
+            title,
+            order: state.order
+          }
+        })
+        console.log(res)
+        commit('addTodos', res.data)
+        commit('setOrder')
+      } catch (err) {
+        alert(err)
+      }  
     },
 
     // READ
@@ -67,45 +71,58 @@ export default {
         })
       }
 
-      const res = await axios({
-        url: END_POINT,
-        method: 'GET',
-        headers
-      })
-      console.log(res)
-      commit('setTodos', res.data)
-      commit('setOrder')
-      commit('updateState', {
-        loading: false
-      })
+      try {
+        const res = await axios({
+          url: END_POINT,
+          method: 'GET',
+          headers
+        })
+        console.log(res)
+        commit('setTodos', res.data)
+        commit('setOrder')
+      } catch (err) {
+        alert(err)
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
     },
 
     // UPDATE
     async updateTodo({ dispatch }, { id, title, done, order }) {
-      const res = await axios({
-        url: END_POINT + '/' + id,
-        method: 'PUT',
-        headers,
-        data: {
-          title,
-          done,
-          order
-        }
-      })
-      dispatch('readTodos', 'no') // todo를 수정하는 경우, 로딩 에니메이션 동작하지 않도록 payload로 문자열을 보내준다
-      console.log(res)
+      try {
+        const res = await axios({
+          url: END_POINT + '/' + id,
+          method: 'PUT',
+          headers,
+          data: {
+            title,
+            done,
+            order
+          }
+        })
+        dispatch('readTodos', 'no') // todo를 수정하는 경우, 로딩 에니메이션 동작하지 않도록 payload로 문자열을 보내준다
+        console.log(res)
+      } catch (err) {
+        alert(err)
+      }
     },
 
     // DELETE
     async deleteTodo({ commit }, todoIdToDelete) {
       commit('deleteTodo', todoIdToDelete)
 
-      const res = await axios({
-        url: END_POINT + '/' + todoIdToDelete,
-        method: 'DELETE',
-        headers
-      })
-      console.log(res)
+      try {
+        const res = await axios({
+          url: END_POINT + '/' + todoIdToDelete,
+          method: 'DELETE',
+          headers
+        })
+        console.log(res)
+      } catch (err) {
+        alert(err)
+      }
     }
   }
 }

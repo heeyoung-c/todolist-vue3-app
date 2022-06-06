@@ -1,12 +1,9 @@
 <template>
   <template v-if="!showComplete && !todo.done">
     <li>
-      <div
-        class="handle">
-        <TheButton>
-          height
-        </TheButton>
-      </div>
+      <TheButton class="handle">
+        height
+      </TheButton>
       <template v-if="!editMode">
         <span 
           class="title"
@@ -69,12 +66,9 @@
       
   <template v-else-if="showComplete && todo.done">
     <li>
-      <div
-        class="handle">
-        <TheButton>
-          height
-        </TheButton>
-      </div>
+      <TheButton>
+        height
+      </TheButton>
       <span 
         class="title"
         :class="{ 'done-todo': todo.done }">
