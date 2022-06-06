@@ -58,10 +58,15 @@ export default {
     },
 
     // READ
-    async readTodos({ commit }) {
-      commit('updateState', {
-        loading: true
-      })
+    async readTodos({ state, commit }, payload) {
+      if (state.loading) return
+      
+      if (!payload) { // todo를 수정하는 경우에는 로딩 에니메이션이 동작하지 않도록 설정
+        commit('updateState', {
+          loading: true
+        })
+      }
+
       const res = await axios({
         url: END_POINT,
         method: 'GET',
@@ -76,7 +81,7 @@ export default {
     },
 
     // UPDATE
-    async updateTodo(context, { id, title, done, order }) {
+    async updateTodo({ dispatch }, { id, title, done, order }) {
       const res = await axios({
         url: END_POINT + '/' + id,
         method: 'PUT',
@@ -87,6 +92,7 @@ export default {
           order
         }
       })
+      dispatch('readTodos', 'no') // todo를 수정하는 경우, 로딩 에니메이션 동작하지 않도록 payload로 문자열을 보내준다
       console.log(res)
     },
 

@@ -42,11 +42,11 @@
             ref="titleInput" 
             :value="title" 
             @input="title = $event.target.value" 
-            @keydown.enter="offEditMode(); updateTitle(), updateTodo()"
+            @keydown.enter="offEditMode(); updateTitle(); updateTodo(); "
             @keydown.esc="offEditMode" />
     
           <TheButton 
-            @click="offEditMode(); updateTitle(); updateTodo()"> 
+            @click="offEditMode(); updateTitle(); updateTodo(); "> 
             check_circle
           </TheButton>
     
@@ -163,6 +163,9 @@ export default {
       return new Date(oldDate)
         .toLocaleString('ko-KR')
         .replace(/(\s*)/g, '')
+    },
+    async readTodos() {
+      this.$store.dispatch('todo/readTodos')
     }
   }
 }
