@@ -12,10 +12,16 @@ export default {
   state() {
     return {
       todos: [],
-      order: 1        
+      order: 1,
+      loading: false
     }
   },
   mutations: {
+    updateState(state, payload) {
+      Object.keys(payload).forEach(key => {
+        state[key] = payload[key]
+      })
+    },
     setTodos(state, payload) {
       state.todos = payload
     },
@@ -53,6 +59,9 @@ export default {
 
     // READ
     async readTodos({ commit }) {
+      commit('updateState', {
+        loading: true
+      })
       const res = await axios({
         url: END_POINT,
         method: 'GET',
@@ -61,6 +70,9 @@ export default {
       console.log(res)
       commit('setTodos', res.data)
       commit('setOrder')
+      commit('updateState', {
+        loading: false
+      })
     },
 
     // UPDATE

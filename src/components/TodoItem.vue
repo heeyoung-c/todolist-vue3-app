@@ -1,6 +1,6 @@
 <template>
   <template v-if="!showComplete && !todo.done">
-    <li ref="move">
+    <li>
       <div
         class="handle">
         <TheButton>
