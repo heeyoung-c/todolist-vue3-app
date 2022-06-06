@@ -6,6 +6,12 @@
 - 내용:
   - 주어진 API를 활용해 할 일 관리 프로젝트를 만들어보세요.
 
+## Preview
+![Preview](/static/preview.gif)
+
+## 과제 링크
+-Netlify를 통해 배포한 사이트: [TodoList](https://super-cupcake-d4ecf8.netlify.app/)
+
 ## 요구사항
 
 ### 필수 요구사항
@@ -36,8 +42,6 @@
 
 - [x] SCSS, Bootstrap 등을 구성해 프로젝트를 최대한 예쁘게(?) 만들어 보세요.
 
-## 과제 링크
--Netlify를 통해 배포한 사이트: [TodoList](https://super-cupcake-d4ecf8.netlify.app/)
 
 ## 과제를 하고 나서..
 Sortablejs를 활용하여 할 일 항목의 순서를 바꾸는 부분의 구현을 하지 못하였다. 왜 안되는지 그 이유를 아직 찾지는 못하였는데, 이 부분에 너무나 많은 시간을 할애하고 있어서 우선 다른 부분을 완성하기로 했다.  
