@@ -52,16 +52,16 @@
           </TheButton>
         </div>
       </template>
+      <div
+        class="update-date">
+        <span class="material-symbols-outlined">
+          subdirectory_arrow_right
+        </span>
+        <span class="update-date__date">
+          수정: {{ updateDate(todo.updatedAt) }}
+        </span>
+      </div>
     </li>
-    <div
-      class="update-date">
-      <span class="material-symbols-outlined">
-        subdirectory_arrow_right
-      </span>
-      <span class="update-date__date">
-        수정: {{ updateDate(todo.updatedAt) }}
-      </span>
-    </div>
   </template>
       
   <template v-else-if="showComplete && todo.done">
@@ -170,7 +170,7 @@ export default {
 
 li {
   display: flex; 
-
+  position: relative;
   height: 60px;
   box-sizing: border-box;
 
@@ -210,8 +210,17 @@ li {
   transition-duration: 0.5s;
 }
 .update-date {
-  color: rgba($color-black, 0.5);
+  position: absolute;
+  bottom: 0;
+  left: 35px;
+  padding: 30px 85px 0 0;
+  color: rgba($color-second, 0);
   font-family: "Oswald", sans-serif;
+  transition: .2s;
+  &:hover {
+    color: $color-second;
+    cursor: pointer;
+  }
   span {
   font-size: 14px;
   }
