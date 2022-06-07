@@ -38,6 +38,11 @@ export default {
       } else {
         state.order = state.todos[state.todos.length - 1].order + 1
       }      
+    },
+    reorder(state, { oldIndex, newIndex }) {
+      const clone = { ...state.todos[oldIndex] }
+      state.todos.splice(oldIndex, 1)
+      state.todos.splice(newIndex, 0, clone)
     }
   },
   actions: { 
@@ -103,6 +108,25 @@ export default {
           }
         })
         dispatch('readTodos', 'no') // todo를 수정하는 경우, 로딩 에니메이션 동작하지 않도록 payload로 문자열을 보내준다
+        console.log(res)
+      } catch (err) {
+        alert(err)
+      }
+    },
+
+    async reorderTodos({ commit, state }, event) {
+      if (event) commit('reorder', event)
+      const todoIds = state.todos.map(todo => todo.id)
+      console.log(todoIds)
+      try {
+        const res = await axios({
+          url: `${END_POINT}/reorder`,
+          method: 'PUT',
+          headers,
+          data: {
+            todoIds
+          }
+        })
         console.log(res)
       } catch (err) {
         alert(err)

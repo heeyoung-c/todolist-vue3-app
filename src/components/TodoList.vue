@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!todos.length || (todos.filter(todo => todo.done).length === todos.length && !showComplete)" 
+    v-show="!todos.length || (todos.filter(todo => todo.done).length === todos.length && !showComplete)" 
     class="no-todo">
     <div
       v-if="!loading"
@@ -10,7 +10,7 @@
   </div>
 
   <div
-    v-else-if="todos.filter(todo => !todo.done).length === todos.length && showComplete" 
+    v-show="todos.filter(todo => !todo.done).length === todos.length && (todos.length && showComplete)" 
     class="no-todo">
     <div class="inner">
       완료된 TODO가 존재하지 않습니다😥
@@ -18,7 +18,6 @@
   </div>
 
   <ul
-    v-else
     ref="todoList">
     <TodoItem
       v-for="todo in todos"
@@ -82,11 +81,15 @@ export default {
   created() {
     this.readTodos()
   },
+  mounted() {
+    this.initSortable()
+  },
   methods: {
     ...mapActions('todo', {
       read: 'readTodos',
       update: 'updateTodo',
-      delete: 'deleteTodo'
+      delete: 'deleteTodo',
+      reorder: 'reorderTodos'
     }),
     async readTodos() {
       this.read()
@@ -118,11 +121,13 @@ export default {
         forceFallback: true, // 다양한 환경의 일관된 Drag&Drop(DnD)을 위해 HTML5 기본 DnD 동작을 무시하고 내장 기능을 사용합니다.
         // 요소의 DnD가 종료되면 실행할 핸들러(함수)를 지정합니다.
         onEnd: event => {
-          console.log(event)
-          this.reorderTodos(event.oldIndex, event.newIndex)
+          this.reorderTodos(event)
         }
       })
-    }
+    },
+    async reorderTodos(event) {
+      this.reorder(event)
+    },
   }
 }
 </script>
@@ -130,16 +135,18 @@ export default {
 <style scoped lang="scss">
 @import "~/scss/_variables";
 
-ul, .no-todo {
+ul {
   min-height: 350px;
   box-sizing: content-box;
   border: 1px solid rgba($color-primary, 0);
 }
 .no-todo {
+  position: absolute;
+  top: 273px;
+  left: 50px;
   .inner {
   color: rgba($color-black, 0.5);
   text-align: center;    
-  padding-top: calc(350px / 2 - 16px);
   }
 }
 .button-container {

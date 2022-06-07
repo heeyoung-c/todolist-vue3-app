@@ -66,9 +66,9 @@
       
   <template v-else-if="showComplete && todo.done">
     <li>
-      <TheButton>
+      <span class="material-symbols-outlined de-activate handle">
         height
-      </TheButton>
+      </span>
       <span 
         class="title"
         :class="{ 'done-todo': todo.done }">
@@ -84,15 +84,6 @@
         delete_forever
       </TheButton>
     </li>
-    <div
-      class="update-date">
-      <span class="material-symbols-outlined">
-        subdirectory_arrow_right
-      </span>
-      <span class="update-date__date">
-        수정: {{ updateDate(todo.updatedAt) }}
-      </span>
-    </div>
   </template>
 </template>
 
@@ -227,5 +218,10 @@ li {
   &__date {
     display: inline-block;
   }
+}
+.de-activate {
+  color: rgba($color-black, 0.2);
+  font-size: 30px;
+  vertical-align: middle;
 }
 </style>
